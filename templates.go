@@ -126,14 +126,14 @@ type TemplateRevertResponse struct {
 }
 
 type TemplatePreview struct {
-	TemplateID   string  `json:"template_id"`
-	VersionID    string  `json:"version_id"`
-	Subject      string  `json:"subject"`
-	HTML         string  `json:"html"`
-	Text         *string `json:"text,omitempty"`
-	FromEmail    *string `json:"from_email,omitempty"`
-	FromName     *string `json:"from_name,omitempty"`
-	ReplyTo      *string `json:"reply_to,omitempty"`
+	TemplateID string  `json:"template_id"`
+	VersionID  string  `json:"version_id"`
+	Subject    string  `json:"subject"`
+	HTML       string  `json:"html"`
+	Text       *string `json:"text,omitempty"`
+	FromEmail  *string `json:"from_email,omitempty"`
+	FromName   *string `json:"from_name,omitempty"`
+	ReplyTo    *string `json:"reply_to,omitempty"`
 }
 
 type CreateTemplateParams struct {
@@ -160,8 +160,8 @@ type UpdateTemplateParams struct {
 	Variables *[]TemplateVariableParam `json:"variables,omitempty"`
 }
 
-type ListTemplatesParams struct { Limit, Offset int }
-type ListTemplateVersionsParams struct { Limit, Offset int }
+type ListTemplatesParams struct{ Limit, Offset int }
+type ListTemplateVersionsParams struct{ Limit, Offset int }
 
 type PreviewTemplateParams struct {
 	VersionID string         `json:"version_id,omitempty"`
@@ -183,75 +183,107 @@ type TemplateVersionsService struct{ client *Client }
 
 func (s *TemplatesService) Create(ctx context.Context, params CreateTemplateParams) (*TemplateMutationResponse, error) {
 	var result TemplateMutationResponse
-	if err := s.client.request(ctx, http.MethodPost, "/templates", params, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodPost, "/templates", params, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 func (s *TemplatesService) List(ctx context.Context, params ListTemplatesParams) (*TemplateList, error) {
 	var result TemplateList
-	if err := s.client.request(ctx, http.MethodGet, "/templates"+paginationQuery(params.Limit, params.Offset), nil, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodGet, "/templates"+paginationQuery(params.Limit, params.Offset), nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 func (s *TemplatesService) Get(ctx context.Context, template string) (*Template, error) {
 	var result Template
-	if err := s.client.request(ctx, http.MethodGet, "/templates/"+url.PathEscape(template), nil, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodGet, "/templates/"+url.PathEscape(template), nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 func (s *TemplatesService) Update(ctx context.Context, template string, params UpdateTemplateParams) (*TemplateMutationResponse, error) {
 	var result TemplateMutationResponse
-	if err := s.client.request(ctx, http.MethodPatch, "/templates/"+url.PathEscape(template), params, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodPatch, "/templates/"+url.PathEscape(template), params, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 func (s *TemplatesService) Delete(ctx context.Context, template string) (*TemplateDeleteResponse, error) {
 	var result TemplateDeleteResponse
-	if err := s.client.request(ctx, http.MethodDelete, "/templates/"+url.PathEscape(template), nil, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodDelete, "/templates/"+url.PathEscape(template), nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 func (s *TemplatesService) Publish(ctx context.Context, template string) (*TemplateMutationResponse, error) {
 	var result TemplateMutationResponse
-	if err := s.client.request(ctx, http.MethodPost, "/templates/"+url.PathEscape(template)+"/publish", nil, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodPost, "/templates/"+url.PathEscape(template)+"/publish", nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 func (s *TemplatesService) Duplicate(ctx context.Context, template string) (*TemplateMutationResponse, error) {
 	var result TemplateMutationResponse
-	if err := s.client.request(ctx, http.MethodPost, "/templates/"+url.PathEscape(template)+"/duplicate", nil, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodPost, "/templates/"+url.PathEscape(template)+"/duplicate", nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 func (s *TemplatesService) Preview(ctx context.Context, template string, params PreviewTemplateParams) (*TemplatePreview, error) {
 	var body any
-	if params.VersionID != "" || params.Variables != nil { body = params }
+	if params.VersionID != "" || params.Variables != nil {
+		body = params
+	}
 	var result TemplatePreview
-	if err := s.client.request(ctx, http.MethodPost, "/templates/"+url.PathEscape(template)+"/preview", body, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodPost, "/templates/"+url.PathEscape(template)+"/preview", body, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 func (s *TemplatesService) TestSend(ctx context.Context, template string, params TestSendTemplateParams) (*SendEmailResponse, error) {
 	var result SendEmailResponse
-	if err := s.client.request(ctx, http.MethodPost, "/templates/"+url.PathEscape(template)+"/test-send", params, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodPost, "/templates/"+url.PathEscape(template)+"/test-send", params, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 
 func (s *TemplateVersionsService) List(ctx context.Context, template string, params ListTemplateVersionsParams) ([]TemplateVersion, error) {
 	var result []TemplateVersion
-	path := "/templates/"+url.PathEscape(template)+"/versions"+paginationQuery(params.Limit, params.Offset)
-	if err := s.client.request(ctx, http.MethodGet, path, nil, &result, nil); err != nil { return nil, err }
+	path := "/templates/" + url.PathEscape(template) + "/versions" + paginationQuery(params.Limit, params.Offset)
+	if err := s.client.request(ctx, http.MethodGet, path, nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return result, nil
 }
 func (s *TemplateVersionsService) Get(ctx context.Context, template, versionID string) (*TemplateVersion, error) {
 	var result TemplateVersion
-	path := "/templates/"+url.PathEscape(template)+"/versions/"+url.PathEscape(versionID)
-	if err := s.client.request(ctx, http.MethodGet, path, nil, &result, nil); err != nil { return nil, err }
+	path := "/templates/" + url.PathEscape(template) + "/versions/" + url.PathEscape(versionID)
+	if err := s.client.request(ctx, http.MethodGet, path, nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 func (s *TemplateVersionsService) Revert(ctx context.Context, template, versionID string) (*TemplateRevertResponse, error) {
 	var result TemplateRevertResponse
-	path := "/templates/"+url.PathEscape(template)+"/versions/"+url.PathEscape(versionID)+"/revert"
-	if err := s.client.request(ctx, http.MethodPost, path, nil, &result, nil); err != nil { return nil, err }
+	path := "/templates/" + url.PathEscape(template) + "/versions/" + url.PathEscape(versionID) + "/revert"
+	if err := s.client.request(ctx, http.MethodPost, path, nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 
 func paginationQuery(limit, offset int) string {
 	query := url.Values{}
-	if limit != 0 { query.Set("limit", strconv.Itoa(limit)) }
-	if offset != 0 { query.Set("offset", strconv.Itoa(offset)) }
-	if encoded := query.Encode(); encoded != "" { return "?"+encoded }
+	if limit != 0 {
+		query.Set("limit", strconv.Itoa(limit))
+	}
+	if offset != 0 {
+		query.Set("offset", strconv.Itoa(offset))
+	}
+	if encoded := query.Encode(); encoded != "" {
+		return "?" + encoded
+	}
 	return ""
 }

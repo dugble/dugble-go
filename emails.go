@@ -25,19 +25,19 @@ type EmailTag struct {
 }
 
 type SendEmailParams struct {
-	From        any                    `json:"from,omitempty"`
-	To          any                    `json:"to"`
-	Subject     string                 `json:"subject"`
-	HTML        string                 `json:"html,omitempty"`
-	Text        string                 `json:"text,omitempty"`
-	ReplyTo     any                    `json:"reply_to,omitempty"`
-	CC          any                    `json:"cc,omitempty"`
-	BCC         any                    `json:"bcc,omitempty"`
-	Headers     map[string]string      `json:"headers,omitempty"`
-	Attachments []EmailAttachment      `json:"attachments,omitempty"`
-	Tags        []EmailTag             `json:"tags,omitempty"`
-	ScheduledAt string                 `json:"scheduled_at,omitempty"`
-	Metadata    map[string]any         `json:"metadata,omitempty"`
+	From        any               `json:"from,omitempty"`
+	To          any               `json:"to"`
+	Subject     string            `json:"subject"`
+	HTML        string            `json:"html,omitempty"`
+	Text        string            `json:"text,omitempty"`
+	ReplyTo     any               `json:"reply_to,omitempty"`
+	CC          any               `json:"cc,omitempty"`
+	BCC         any               `json:"bcc,omitempty"`
+	Headers     map[string]string `json:"headers,omitempty"`
+	Attachments []EmailAttachment `json:"attachments,omitempty"`
+	Tags        []EmailTag        `json:"tags,omitempty"`
+	ScheduledAt string            `json:"scheduled_at,omitempty"`
+	Metadata    map[string]any    `json:"metadata,omitempty"`
 }
 
 type SendEmailResponse struct {
@@ -173,34 +173,54 @@ func (s *EmailsService) Analytics(ctx context.Context) (*EmailAnalytics, error) 
 
 func (s *EmailsService) Events(ctx context.Context, id string, params ListEmailEventsParams) (*EmailEventList, error) {
 	query := url.Values{}
-	if params.Limit != 0 { query.Set("limit", strconv.Itoa(params.Limit)) }
-	if params.Offset != 0 { query.Set("offset", strconv.Itoa(params.Offset)) }
-	path := "/emails/"+url.PathEscape(id)+"/events"
-	if encoded := query.Encode(); encoded != "" { path += "?"+encoded }
+	if params.Limit != 0 {
+		query.Set("limit", strconv.Itoa(params.Limit))
+	}
+	if params.Offset != 0 {
+		query.Set("offset", strconv.Itoa(params.Offset))
+	}
+	path := "/emails/" + url.PathEscape(id) + "/events"
+	if encoded := query.Encode(); encoded != "" {
+		path += "?" + encoded
+	}
 	var result EmailEventList
-	if err := s.client.request(ctx, http.MethodGet, path, nil, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodGet, path, nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 
 func (s *EmailsService) List(ctx context.Context, params ListEmailsParams) ([]EmailSummary, error) {
 	query := url.Values{}
-	if params.Limit != 0 { query.Set("limit", strconv.Itoa(params.Limit)) }
-	if params.Offset != 0 { query.Set("offset", strconv.Itoa(params.Offset)) }
+	if params.Limit != 0 {
+		query.Set("limit", strconv.Itoa(params.Limit))
+	}
+	if params.Offset != 0 {
+		query.Set("offset", strconv.Itoa(params.Offset))
+	}
 	path := "/emails"
-	if encoded := query.Encode(); encoded != "" { path += "?"+encoded }
+	if encoded := query.Encode(); encoded != "" {
+		path += "?" + encoded
+	}
 	var result []EmailSummary
-	if err := s.client.request(ctx, http.MethodGet, path, nil, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodGet, path, nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return result, nil
 }
 
 func (s *EmailsService) Update(ctx context.Context, id string, params UpdateEmailParams) (*SendEmailResponse, error) {
 	var result SendEmailResponse
-	if err := s.client.request(ctx, http.MethodPatch, "/emails/"+url.PathEscape(id), params, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodPatch, "/emails/"+url.PathEscape(id), params, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 
 func (s *EmailsService) Cancel(ctx context.Context, id string) (*SendEmailResponse, error) {
 	var result SendEmailResponse
-	if err := s.client.request(ctx, http.MethodPost, "/emails/"+url.PathEscape(id)+"/cancel", nil, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodPost, "/emails/"+url.PathEscape(id)+"/cancel", nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }

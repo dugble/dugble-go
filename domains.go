@@ -27,7 +27,7 @@ const (
 	DomainHealthHealthy  DomainHealthStatus = "healthy"
 	DomainHealthDegraded DomainHealthStatus = "degraded"
 
-	DomainRegionUSEast1 DomainRegion = "us-east-1"
+	DomainRegionUSEast1  DomainRegion = "us-east-1"
 	DomainRegionEUNorth1 DomainRegion = "eu-north-1"
 
 	DomainTLSOpportunistic DomainTLSMode = "opportunistic"
@@ -74,8 +74,8 @@ type Domain struct {
 }
 
 type CreateDomainParams struct {
-	Name   string        `json:"name"`
-	Region DomainRegion  `json:"region"`
+	Name   string         `json:"name"`
+	Region DomainRegion   `json:"region"`
 	TLS    *DomainTLSMode `json:"tls,omitempty"`
 }
 
