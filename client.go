@@ -24,13 +24,17 @@ type Client struct {
 	baseURL string
 	http    HTTPDoer
 
-	Topics     *TopicsService
-	Segments   *SegmentsService
-	Domains    *DomainsService
-	Emails     *EmailsService
-	SMS        *SmsService
-	Templates  *TemplatesService
-	Broadcasts *BroadcastsService
+	Topics            *TopicsService
+	Segments          *SegmentsService
+	Domains           *DomainsService
+	Emails            *EmailsService
+	SMS               *SmsService
+	Templates         *TemplatesService
+	Broadcasts        *BroadcastsService
+	Contacts          *ContactsService
+	ContactProperties *ContactPropertiesService
+	Suppressions      *SuppressionsService
+	SenderIDs         *SenderIDsService
 }
 
 type Option func(*Client)
@@ -68,6 +72,14 @@ func New(apiKey string, options ...Option) *Client {
 	versions := &TemplateVersionsService{client: client}
 	client.Templates = &TemplatesService{client: client, Versions: versions}
 	client.Broadcasts = &BroadcastsService{client: client}
+	client.Contacts = &ContactsService{
+		client:   client,
+		Topics:   &ContactTopicsService{client: client},
+		Segments: &ContactSegmentsService{client: client},
+	}
+	client.ContactProperties = &ContactPropertiesService{client: client}
+	client.Suppressions = &SuppressionsService{client: client}
+	client.SenderIDs = &SenderIDsService{client: client}
 	return client
 }
 
