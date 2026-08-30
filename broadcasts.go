@@ -195,9 +195,13 @@ func (s *BroadcastsService) Cancel(ctx context.Context, id string) (*Broadcast, 
 	}
 	return &result, nil
 }
-func (s *BroadcastsService) Duplicate(ctx context.Context, id string, params DuplicateBroadcastParams) (*Broadcast, error) {
+func (s *BroadcastsService) Duplicate(ctx context.Context, id string, params ...DuplicateBroadcastParams) (*Broadcast, error) {
+	body := DuplicateBroadcastParams{}
+	if len(params) > 0 {
+		body = params[0]
+	}
 	var result Broadcast
-	if err := s.client.request(ctx, http.MethodPost, "/broadcasts/"+url.PathEscape(id)+"/duplicate", params, &result, nil); err != nil {
+	if err := s.client.request(ctx, http.MethodPost, "/broadcasts/"+url.PathEscape(id)+"/duplicate", body, &result, nil); err != nil {
 		return nil, err
 	}
 	return &result, nil
