@@ -52,7 +52,7 @@ func TestTopicsListUsesOffsetPagination(t *testing.T) {
 
 func TestSegmentsAudienceSizeEncodesID(t *testing.T) {
 	client := newTestClient(t, func(req *http.Request) *http.Response {
-		if got, want := req.URL.String(), "https://example.test/segments/segment%252F123/audience-size"; got != want {
+		if got, want := req.URL.String(), "https://example.test/segments/segment%2F123/audience-size"; got != want {
 			t.Fatalf("url = %q, want %q", got, want)
 		}
 		return jsonResponse(http.StatusOK, `{"success":true,"data":{"segment_id":"segment_123","count":42}}`)
