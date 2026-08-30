@@ -43,25 +43,25 @@ type Contact struct {
 }
 
 type CreateContactParams struct {
-	Email            string            `json:"email"`
-	Phone            string            `json:"phone,omitempty"`
-	SMSConsentStatus SMSConsentStatus  `json:"sms_consent_status,omitempty"`
-	SMSConsentSource SMSConsentSource  `json:"sms_consent_source,omitempty"`
-	FirstName        string            `json:"first_name,omitempty"`
-	LastName         string            `json:"last_name,omitempty"`
-	Unsubscribed     *bool             `json:"unsubscribed,omitempty"`
-	Properties       map[string]any    `json:"properties,omitempty"`
+	Email            string           `json:"email"`
+	Phone            string           `json:"phone,omitempty"`
+	SMSConsentStatus SMSConsentStatus `json:"sms_consent_status,omitempty"`
+	SMSConsentSource SMSConsentSource `json:"sms_consent_source,omitempty"`
+	FirstName        string           `json:"first_name,omitempty"`
+	LastName         string           `json:"last_name,omitempty"`
+	Unsubscribed     *bool            `json:"unsubscribed,omitempty"`
+	Properties       map[string]any   `json:"properties,omitempty"`
 }
 
 type UpdateContactParams struct {
-	Email            *string            `json:"email,omitempty"`
-	Phone            *string            `json:"phone,omitempty"`
-	SMSConsentStatus *SMSConsentStatus  `json:"sms_consent_status,omitempty"`
-	SMSConsentSource *SMSConsentSource  `json:"sms_consent_source,omitempty"`
-	FirstName        *string            `json:"first_name,omitempty"`
-	LastName         *string            `json:"last_name,omitempty"`
-	Unsubscribed     *bool              `json:"unsubscribed,omitempty"`
-	Properties       *map[string]any    `json:"properties,omitempty"`
+	Email            *string           `json:"email,omitempty"`
+	Phone            *string           `json:"phone,omitempty"`
+	SMSConsentStatus *SMSConsentStatus `json:"sms_consent_status,omitempty"`
+	SMSConsentSource *SMSConsentSource `json:"sms_consent_source,omitempty"`
+	FirstName        *string           `json:"first_name,omitempty"`
+	LastName         *string           `json:"last_name,omitempty"`
+	Unsubscribed     *bool             `json:"unsubscribed,omitempty"`
+	Properties       *map[string]any   `json:"properties,omitempty"`
 }
 
 type ListContactsParams struct {

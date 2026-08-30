@@ -43,24 +43,32 @@ type SenderIDsService struct{ client *Client }
 
 func (s *SenderIDsService) Create(ctx context.Context, params CreateSenderIDParams) (*SenderID, error) {
 	var result SenderID
-	if err := s.client.request(ctx, http.MethodPost, "/sender-ids", params, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodPost, "/sender-ids", params, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 
 func (s *SenderIDsService) List(ctx context.Context) ([]SenderID, error) {
 	var result []SenderID
-	if err := s.client.request(ctx, http.MethodGet, "/sender-ids", nil, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodGet, "/sender-ids", nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return result, nil
 }
 
 func (s *SenderIDsService) Get(ctx context.Context, id string) (*SenderID, error) {
 	var result SenderID
-	if err := s.client.request(ctx, http.MethodGet, "/sender-ids/"+url.PathEscape(id), nil, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodGet, "/sender-ids/"+url.PathEscape(id), nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
 
 func (s *SenderIDsService) Delete(ctx context.Context, id string) (*SenderID, error) {
 	var result SenderID
-	if err := s.client.request(ctx, http.MethodDelete, "/sender-ids/"+url.PathEscape(id), nil, &result, nil); err != nil { return nil, err }
+	if err := s.client.request(ctx, http.MethodDelete, "/sender-ids/"+url.PathEscape(id), nil, &result, nil); err != nil {
+		return nil, err
+	}
 	return &result, nil
 }
