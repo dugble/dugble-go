@@ -2,7 +2,6 @@ package dugble
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 	"strconv"
@@ -55,7 +54,7 @@ type CreateTopicParams struct {
 
 type UpdateTopicParams struct {
 	Name        *string          `json:"name,omitempty"`
-	Description *string          `json:"description,omitempty"`
+	Description **string         `json:"description,omitempty"`
 	Visibility  *TopicVisibility `json:"visibility,omitempty"`
 }
 
@@ -113,9 +112,6 @@ func (s *TopicsService) Delete(ctx context.Context, id string) (*TopicDeleteResp
 	var result TopicDeleteResponse
 	if err := s.client.request(ctx, http.MethodDelete, "/topics/"+url.PathEscape(id), nil, &result, nil); err != nil {
 		return nil, err
-	}
-	if result.Object == "" && result.ID == "" && !result.Deleted {
-		return nil, fmt.Errorf("dugble: empty topic delete response")
 	}
 	return &result, nil
 }
