@@ -24,8 +24,13 @@ type Client struct {
 	baseURL string
 	http    HTTPDoer
 
-	Topics   *TopicsService
-	Segments *SegmentsService
+	Topics     *TopicsService
+	Segments   *SegmentsService
+	Domains    *DomainsService
+	Emails     *EmailsService
+	SMS        *SmsService
+	Templates  *TemplatesService
+	Broadcasts *BroadcastsService
 }
 
 type Option func(*Client)
@@ -57,6 +62,12 @@ func New(apiKey string, options ...Option) *Client {
 	}
 	client.Topics = &TopicsService{client: client}
 	client.Segments = &SegmentsService{client: client}
+	client.Domains = &DomainsService{client: client}
+	client.Emails = &EmailsService{client: client}
+	client.SMS = &SmsService{client: client}
+	versions := &TemplateVersionsService{client: client}
+	client.Templates = &TemplatesService{client: client, Versions: versions}
+	client.Broadcasts = &BroadcastsService{client: client}
 	return client
 }
 
@@ -75,12 +86,6 @@ func (e *APIError) Error() string {
 		return e.Message
 	}
 	return fmt.Sprintf("%s: %s", e.Code, e.Message)
-}
-
-type envelope[T any] struct {
-	Success bool      `json:"success"`
-	Data    T         `json:"data"`
-	Error   *APIError `json:"error"`
 }
 
 func (c *Client) request(ctx context.Context, method, path string, body any, out any, headers http.Header) error {
@@ -150,4 +155,12 @@ func (c *Client) request(ctx context.Context, method, path string, body any, out
 		return nil
 	}
 	return json.Unmarshal(raw.Data, out)
+}
+
+func remarshal(input any, output any) error {
+	data, err := json.Marshal(input)
+	if err != nil {
+		return err
+	}
+	return json.Unmarshal(data, output)
 }
